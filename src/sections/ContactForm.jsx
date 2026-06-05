@@ -15,9 +15,7 @@ const schema = z.object({
   message: z.string().min(10, "Message too short"),
   botField: z.string().optional(),
 });
-console.log("check", import.meta.env.VITE_EMAILJS_SERVICE_ID);
-console.log(import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
-console.log(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
 
@@ -57,7 +55,6 @@ const ContactForm = () => {
     }
     // 📩 VALIDATION
     const result = schema.safeParse(formData);
-    console.log(result);
     if (!result.success) {
       result.error.issues.forEach((err) => {
         toast.error(err.message);
