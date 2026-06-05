@@ -1,4 +1,5 @@
 import CallToAction from "../sections/CallToAction"
+import ContactForm from "../sections/ContactForm"
 import Footer from "../sections/Footer"
 import Header from "../sections/Header"
 import Hero from "../sections/Hero"
@@ -6,6 +7,8 @@ import LogoTicker from "../sections/LogoTicker"
 import Pricing from "../sections/Pricing"
 import ProductShowcase from "../sections/ProductShowcase"
 import Testimonials from "../sections/Testimonials"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Page = () => {
   return (
     <div className="min-h-screen">
@@ -16,7 +19,9 @@ const Page = () => {
       <Pricing/>
       <Testimonials/>
       <CallToAction/>
+      <ContactForm/>
       <Footer/>
+       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   )
 }

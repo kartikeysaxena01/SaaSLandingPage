@@ -1,8 +1,11 @@
 import CogImage from "../assets/cog.png";
-
+import { trackEvent } from "./Analytics";
 const Hero = () => {
   return (
-    <section id="about" className="w-full py-20 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_66%)] overflow-hidden">
+    <section
+      id="about"
+      className="w-full py-20 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_66%)] overflow-hidden"
+    >
       <div className="max-w-6xl mx-auto px-5">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           {/* LEFT CONTENT */}
@@ -25,11 +28,14 @@ const Hero = () => {
 
             {/* Buttons */}
             <div className="mt-6 flex gap-4 items-center">
-              <button className="bg-black text-white px-5 py-3 rounded-lg">
+              <button onClick={()=>trackEvent("Hero Section","Get For Free Clicked")}className="bg-black text-white px-5 py-3 rounded-lg">
                 Get for free
               </button>
 
-              <button className="border border-black/20 px-5 py-3 rounded-lg">
+              <button
+                onClick={() => trackEvent("Hero Section", "Learn More Clicked")}
+                className="border border-black/20 px-5 py-3 rounded-lg"
+              >
                 Learn more
               </button>
             </div>
