@@ -1,15 +1,24 @@
-import ReactGA from 'react-ga4';
-const tracking_id=import.meta.env.VITE_TRACKING_ID;
+import ReactGA from "react-ga4";
 
-export const initGA=()=>{
-    ReactGA.initialize(tracking_id);
-}
-export const trackingPageView=()=>{
-    ReactGA.send({
-        hitType:"pageview",
-        page:'https://modern-saas-landing-gamma.vercel.app/',
-    })
-}
+export const initGA = () => {
+  const trackingId = import.meta.env.VITE_TRACKING_ID;
+
+
+  if (!trackingId) {
+    console.error("Missing GA Tracking ID");
+    return;
+  }
+
+  ReactGA.initialize(trackingId);
+};
+
+export const trackingPageView = () => {
+  ReactGA.send({
+    hitType: "pageview",
+    page: window.location.pathname,
+  });
+};
+
 export const trackEvent = (category, action) => {
   ReactGA.event({
     category,

@@ -7,6 +7,7 @@ import "react-phone-number-input/style.css";
 import { z } from "zod";
 import { trackEvent } from "../sections/Analytics.js";
 // ---------------- ZOD SCHEMA ----------------
+
 const schema = z.object({
   name: z.string().min(2, "Name too short"),
   email: z.string().email("Invalid email"),
@@ -79,7 +80,7 @@ const ContactForm = () => {
 
       trackEvent("Contact Form", "Form Submitted Successfully");
 
-      toast.success("Message sent successfully!");
+      toast.success("Thanks for reaching out! We'll respond via email soon.");
 
       setFormData({
         name: "",
@@ -108,7 +109,7 @@ const ContactForm = () => {
       >
         <div className="flex justify-center mb-10">
           <div className="inline-flex  text-center items-center justify-center  border border-purple-200 rounded-full px-4 py-1 text-purple-600 text-md">
-            Sign up for free
+            Contact Us for more Details
           </div>
         </div>
 

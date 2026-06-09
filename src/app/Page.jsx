@@ -8,6 +8,7 @@ import Pricing from "../sections/Pricing"
 import ProductShowcase from "../sections/ProductShowcase"
 import Testimonials from "../sections/Testimonials"
 import { ToastContainer } from "react-toastify";
+import Subscribe from "../sections/Subscribe"
 import "react-toastify/dist/ReactToastify.css";
 const Page = () => {
   return (
@@ -20,6 +21,7 @@ const Page = () => {
       <Testimonials/>
       <CallToAction/>
       <ContactForm/>
+      <Subscribe/>
       <Footer/>
        <ToastContainer position="top-right" autoClose={3000} />
     </div>
