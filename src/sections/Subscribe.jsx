@@ -8,18 +8,22 @@ export default function Subscribe() {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(300);
+
   useEffect(() => {
     let interval;
+
     if (otpSent && timer > 0) {
       interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
     }
+
     return () => clearInterval(interval);
   }, [otpSent, timer]);
+
   const handleSubscribe = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     if (!email) {
       toast.error("Email is required");
@@ -29,20 +33,26 @@ export default function Subscribe() {
     setLoading(true);
 
     try {
-      const res = await axios.post("https://saaslamdingpage.onrender.com/api/subscribe", {
-        email,
-      });
+      const res = await axios.post(
+        "https://saaslanding02.onrender.com/api/subscribe",
+        {
+          email,
+        }
+      );
 
       toast.success(res.data.message);
+
       setOtpSent(true);
+      setTimer(300);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send OTP");
+      toast.error(
+        err.response?.data?.message || "Failed to send OTP"
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Verify OTP
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
 
@@ -54,22 +64,32 @@ export default function Subscribe() {
     setLoading(true);
 
     try {
-      const res = await axios.post("https://saaslamdingpage.onrender.com/api/verify-otp", {
-        email,
-        otp,
-      });
+      const res = await axios.post(
+      "https://saaslanding02.onrender.com/api/verify-otp",
+        {
+          email,
+          otp,
+        }
+      );
 
       toast.success(res.data.message);
 
       setEmail("");
       setOtp("");
       setOtpSent(false);
+      setTimer(300);
     } catch (err) {
-      toast.error(err.response?.data?.message || "OTP verification failed");
+      toast.error(
+        err.response?.data?.message ||
+          "OTP verification failed"
+      );
     } finally {
       setLoading(false);
     }
   };
+
+  const minutes = Math.floor(timer / 60);
+  const seconds = timer % 60;
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
@@ -98,9 +118,11 @@ export default function Subscribe() {
             your inbox.
           </p>
         </div>
-        {otpSent && (
-          <p className="text-center text-sm font-medium text-orange-500">
-            OTP expires in {timer} seconds
+
+        {otpSent && timer > 0 && (
+          <p className="text-center text-sm font-medium text-orange-500 mt-3">
+            OTP expires in {minutes}:
+            {seconds < 10 ? `0${seconds}` : seconds}
           </p>
         )}
 
@@ -110,7 +132,9 @@ export default function Subscribe() {
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
 
@@ -123,18 +147,27 @@ export default function Subscribe() {
             </button>
           </form>
         ) : (
-          <form onSubmit={handleVerifyOTP} className="mt-5 space-y-3">
+          <form
+            onSubmit={handleVerifyOTP}
+            className="mt-5 space-y-3"
+          >
             <div className="bg-gray-100 p-3 rounded-lg text-center">
-              <p className="text-sm text-gray-600">OTP sent to</p>
+              <p className="text-sm text-gray-600">
+                OTP sent to
+              </p>
 
-              <p className="font-semibold text-gray-800">{email}</p>
+              <p className="font-semibold text-gray-800">
+                {email}
+              </p>
             </div>
 
             <input
               type="text"
               placeholder="Enter OTP"
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={(e) =>
+                setOtp(e.target.value)
+              }
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
             />
 
@@ -146,11 +179,25 @@ export default function Subscribe() {
               {loading ? "Verifying..." : "Verify OTP"}
             </button>
 
+            {timer === 0 && (
+              <button
+                type="button"
+                onClick={handleSubscribe}
+                disabled={loading}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg"
+              >
+                {loading
+                  ? "Sending..."
+                  : "Resend OTP"}
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => {
                 setOtpSent(false);
                 setOtp("");
+                setTimer(300);
               }}
               className="w-full border border-gray-300 py-3 rounded-lg"
             >
